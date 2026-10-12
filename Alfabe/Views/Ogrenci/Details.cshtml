@@ -1,0 +1,63 @@
+﻿@model Alfabe.Models.Ogrenci
+
+@{
+    ViewData["Title"] = "Öğrenci Detayları";
+}
+
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+</section>
+
+<section class="content">
+    <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h3 class="card-title">Öğrenci Bilgileri</h3>
+        </div>
+
+        <div class="card-body">
+            <dl class="row">
+
+                <!-- Ad -->
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Ad)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Ad)</dd>
+
+                <!-- Soyad -->
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Soyad)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Soyad)</dd>
+
+                <!-- Telefon -->
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Telefon)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Telefon)</dd>
+
+                <!-- Sınıf -->
+                <dt class="col-sm-3">Sınıf</dt>
+                <dd class="col-sm-9">@Model.Sinif . Sınıf</dd>
+
+                <!-- Veli Bilgisi -->
+                <dt class="col-sm-3">Veli</dt>
+                <dd class="col-sm-9">
+                    @if (Model.Veli != null)
+                    {
+                        <strong>@Model.Veli.Ad @Model.Veli.Soyad</strong>
+                        <br />
+                        <span class="text-muted">Telefon: @Model.Veli.Telefon</span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Veli bilgisi atanmadı.</span>
+                    }
+                </dd>
+
+            </dl>
+        </div>
+
+        <div class="card-footer">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Düzenle
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Geri Dön
+            </a>
+        </div>
+    </div>
+</section>

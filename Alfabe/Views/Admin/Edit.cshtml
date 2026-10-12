@@ -1,0 +1,52 @@
+﻿@model Alfabe.Models.ViewModels.AppUserEditViewModel
+
+@{
+    ViewData["Title"] = "Yönetici Düzenle";
+}
+
+<div class="container mt-4">
+    <h2>Yönetici Bilgilerini Güncelle</h2>
+    <hr />
+
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="AdSoyad" class="form-label"></label>
+            <input asp-for="AdSoyad" class="form-control" />
+            <span asp-validation-for="AdSoyad" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="alert alert-warning">
+            Şifreyi değiştirmek istemiyorsanız aşağıdaki alanları boş bırakın.
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="NewPassword" class="form-label"></label>
+            <input asp-for="NewPassword" class="form-control" />
+            <span asp-validation-for="NewPassword" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ConfirmPassword" class="form-label"></label>
+            <input asp-for="ConfirmPassword" class="form-control" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+
+
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-save"></i> Güncelle
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">İptal</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

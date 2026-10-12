@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Alfabe.Models.Dersler>
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Ders Listesi";
+
+    string currentSort = Context.Request.Query["sortOrder"];
+    string currentSearch = Context.Request.Query["search"];
+
+    var sortList = new List<SelectListItem>
+    {
+        new SelectListItem { Text = "Sıralama Seç", Value = "" },
+        new SelectListItem { Text = "Ad A-Z", Value = "dersadi_asc", Selected = currentSort == "dersadi_asc" },
+        new SelectListItem { Text = "Ad Z-A", Value = "dersadi_desc", Selected = currentSort == "dersadi_desc" },
+        new SelectListItem { Text = "Açıklama A-Z", Value = "aciklama_asc", Selected = currentSort == "aciklama_asc" },
+        new SelectListItem { Text = "Açıklama Z-A", Value = "aciklama_desc", Selected = currentSort == "aciklama_desc" }
+    };
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary">
+            <i class="fas fa-book-open me-2"></i> @ViewData["Title"]
+        </h2>
+
+        <a asp-action="Create" class="btn btn-success shadow">
+            <i class="fas fa-plus me-1"></i> Yeni Ders Ekle
+        </a>
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="fas fa-check-circle me-2"></i> @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <form method="get" class="row g-2 mb-4 align-items-center">
+        <div class="col-auto">
+            <input type="text" name="search" value="@currentSearch"
+                   placeholder="Ara..." class="form-control shadow-sm" />
+        </div>
+
+        <div class="col-auto">
+            @Html.DropDownList("sortOrder", sortList,
+            new { @class = "form-select shadow-sm", onchange = "this.form.submit()" })
+        </div>
+
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary shadow">
+                <i class="fas fa-search me-1"></i> Ara
+            </button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary shadow">Temizle</a>
+        </div>
+    </form>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border border-dark-subtle rounded-4 h-100">
+                    <div class="card-body d-flex flex-column">
+
+                        <h5 class="card-title text-primary">
+                            <i class="fas fa-book me-2"></i> @item.DersAdi
+                        </h5>
+
+                        @* Sınıf Seviyesi Badge *@
+                        @if (item.SinifSeviyesi != null)
+                        {
+                            <span class="badge bg-primary mb-2">
+                                @item.SinifSeviyesi . Sınıf
+                            </span>
+                        }
+
+                        @* Açıklama *@
+                        <p class="card-text text-muted small flex-grow-1">
+                            @{
+                                var desc = string.IsNullOrWhiteSpace(item.Aciklama)
+                                ? "Açıklama yok"
+                                : item.Aciklama.Length > 100
+                                ? item.Aciklama.Substring(0, 100) + "..."
+                                : item.Aciklama;
+                            }
+                            @desc
+                        </p>
+
+                        <div class="d-flex justify-content-between mt-3">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit me-1"></i> Düzenle
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                <i class="fas fa-info-circle me-1"></i> Detay
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash-alt me-1"></i> Sil
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

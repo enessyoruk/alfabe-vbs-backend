@@ -1,0 +1,32 @@
+﻿@model Alfabe.Models.Adres
+
+@{
+    ViewData["Title"] = "Yeni Adres Ekle";
+}
+
+<h1>Yeni Adres Ekle</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post" autocomplete="off">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="DetayAdres" class="control-label"></label>
+                <input asp-for="DetayAdres" class="form-control" placeholder="Adresinizi girin" />
+                <span asp-validation-for="DetayAdres" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Kaydet" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Geri</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,39 @@
+﻿@model Alfabe.Models.Veli
+
+@{
+    ViewData["Title"] = "Veli Sil";
+}
+
+<h1 class="mb-4 text-danger">Veli Sil</h1>
+
+<div class="alert alert-warning" role="alert">
+    <strong>Dikkat!</strong> Bu veliyi silmek üzeresiniz. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title mb-4">Veli Bilgileri</h5>
+
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Ad)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(m => m.Ad)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Soyad)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(m => m.Soyad)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Telefon)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(m => m.Telefon)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Telefon2)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(m => m.Telefon2)</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="mt-4">
+                <button type="submit" class="btn btn-danger me-2">Evet, Sil</button>
+                <a asp-action="Index" class="btn btn-secondary">İptal</a>
+            </div>
+        </form>
+    </div>
+</div>

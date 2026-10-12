@@ -1,0 +1,36 @@
+﻿@model Alfabe.Models.Veli
+
+@{
+    ViewData["Title"] = "Yeni Veli Ekle";
+}
+
+<h2>Yeni Veli Ekle</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form asp-action="Create" method="post" autocomplete="off">
+            @Html.AntiForgeryToken()
+
+            <!-- 🔥 TÜM HATA MESAJLARI (Identity + ModelState) -->
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <!-- Ortak form alanları -->
+            @await Html.PartialAsync("_VeliForm")
+
+            <button type="submit" class="btn btn-primary mt-3">
+                Kaydet
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary mt-3">
+                Geri
+            </a>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

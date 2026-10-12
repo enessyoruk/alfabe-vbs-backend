@@ -1,0 +1,24 @@
+﻿@model Alfabe.Models.Adres
+
+@{
+    ViewData["Title"] = "Adres Detayları";
+}
+
+<h1>Adres Detayları</h1>
+
+<div>
+    <h4>Adres</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DetayAdres)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DetayAdres)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Düzenle</a>
+    <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+</div>

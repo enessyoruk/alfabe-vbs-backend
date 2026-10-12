@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model Alfabe.Models.Dersler
+
+<div class="form-group">
+    <label asp-for="DersAdi" class="control-label">
+        Ders Adı
+        <span class="ms-2 fw-bold">
+            (Örn: <strong>Matematik - 5. Sınıf</strong> şeklinde sınıf seviyesini belirtiniz.)
+        </span>
+    </label>
+    <input asp-for="DersAdi" class="form-control" />
+    <span asp-validation-for="DersAdi" class="text-danger"></span>
+</div>
+
+
+<div class="mb-3">
+    <label asp-for="Aciklama" class="form-label">Açıklama</label>
+    <textarea asp-for="Aciklama" class="form-control" placeholder="Derse ait açıklamayı girin"></textarea>
+    <span asp-validation-for="Aciklama" class="text-danger"></span>
+</div>
+<div class="form-group mb-3">
+    <label asp-for="SinifSeviyesi" class="control-label">Sınıf Seviyesi</label>
+    <select asp-for="SinifSeviyesi" class="form-control">
+        <option value="">Seçiniz...</option>
+        <option value="5">5. Sınıf</option>
+        <option value="6">6. Sınıf</option>
+        <option value="7">7. Sınıf</option>
+        <option value="8">8. Sınıf</option>
+    </select>
+    <span asp-validation-for="SinifSeviyesi" class="text-danger"></span>
+</div>
+<div class="form-group mb-3">
+    <label class="control-label">Bu dersi veren öğretmen(ler)</label>
+
+    @{
+        var ogretmenler = ViewBag.Ogretmenler as IEnumerable<SelectListItem>
+        ?? Enumerable.Empty<SelectListItem>();
+    }
+
+    @if (!ogretmenler.Any())
+    {
+        <p class="text-muted">Henüz kayıtlı öğretmen bulunmuyor.</p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var ogretmen in ogretmenler)
+            {
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="selectedOgretmenler"
+                               value="@ogretmen.Value"
+                               @(ogretmen.Selected ? "checked" : "") />
+                        <label class="form-check-label">
+                            @ogretmen.Text
+                        </label>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

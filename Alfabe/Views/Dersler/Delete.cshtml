@@ -1,0 +1,61 @@
+﻿@model Alfabe.Models.Dersler
+
+@{
+    ViewData["Title"] = "Ders Sil";
+}
+
+<section class="content-header mb-4">
+    <h1>@ViewData["Title"]</h1>
+</section>
+
+<section class="content">
+    <div class="card shadow-sm border-danger">
+        <div class="card-header bg-danger text-white">
+            <h3 class="card-title">
+                <i class="fas fa-trash-alt me-2"></i>Dersi Sil
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-warning" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Dikkat!</strong> Bu dersi silmek üzeresiniz.
+                Bu işlem geri alınamaz.
+
+                <br />
+                <br />
+                Bu dersi sildiğinizde:
+                <ul class="mb-0">
+                    <li>Bu derse kayıtlı öğrencilerin <strong>öğrenci–ders kayıtları</strong> silinecek,</li>
+                    <li>
+                        Bu derse ait <strong>genel sınavlar</strong> ve bu sınavlara ait
+                        <strong>analiz kayıtları</strong>  silinecek.
+                    </li>
+                </ul>
+
+                <br />
+                Yine de devam etmek istiyor musunuz?
+            </div>
+
+
+            <dl class="row">
+                <dt class="col-sm-3">Ders Adı</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.DersAdi)</dd>
+
+                <dt class="col-sm-3">Açıklama</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Aciklama)</dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <form asp-action="Delete" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger me-2">
+                    <i class="fas fa-trash-alt me-1"></i> Evet, Sil
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Geri
+                </a>
+            </form>
+        </div>
+    </div>
+</section>

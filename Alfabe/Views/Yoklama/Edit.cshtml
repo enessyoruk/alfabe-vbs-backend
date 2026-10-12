@@ -1,0 +1,54 @@
+﻿@model Alfabe.Models.ViewModels.YoklamaViewModel
+
+@{
+    ViewData["Title"] = "Yoklama Düzenle";
+}
+
+<form asp-action="Edit" method="post" autocomplete="off">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Tarih" class="form-label"></label>
+        <input asp-for="Tarih" class="form-control" type="date"
+               value="@Model.Tarih.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label class="form-label">Sınıf</label>
+        <input asp-for="Sinif" class="form-control" readonly />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Öğrenci</label>
+        @{
+            var seciliOgrenci = Model.OgrencilerListesi.FirstOrDefault(o => o.Value == Model.OgrenciId.ToString());
+        }
+        <input class="form-control" value="@(seciliOgrenci?.Text ?? "Bilinmiyor")" readonly />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Devam Durumu</label>
+        <select asp-for="DevamDurumuId" class="form-select">
+            <option value="">Seçin</option>
+
+            @foreach (var dd in Model.DevamDurumlariListesi)
+            {
+                <option value="@dd.Value" selected="@(dd.Value == Model.DevamDurumuId.ToString() ? "selected" : null)">
+                    @dd.Text
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group mt-3">
+        <input type="submit" value="Kaydet" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary ms-2">Geri</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

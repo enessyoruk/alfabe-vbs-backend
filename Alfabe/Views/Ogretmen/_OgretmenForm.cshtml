@@ -1,0 +1,108 @@
+﻿@model Alfabe.Models.Ogretmen
+
+<!-- AD -->
+<div class="form-group mb-3">
+    <label asp-for="Ad"></label>
+    <input asp-for="Ad" class="form-control" placeholder="Ad" />
+    <span asp-validation-for="Ad" class="text-danger"></span>
+</div>
+
+<!-- SOYAD -->
+<div class="form-group mb-3">
+    <label asp-for="Soyad"></label>
+    <input asp-for="Soyad" class="form-control" placeholder="Soyad" />
+    <span asp-validation-for="Soyad" class="text-danger"></span>
+</div>
+
+<!-- TELEFON -->
+<div class="form-group mb-3">
+    <label asp-for="Telefon"></label>
+    <input asp-for="Telefon" class="form-control" maxlength="11" placeholder="Telefon" />
+    <span asp-validation-for="Telefon" class="text-danger"></span>
+</div>
+
+<!-- EMAIL -->
+<div class="form-group mb-3">
+    <label asp-for="Email"></label>
+    <input asp-for="Email" class="form-control" placeholder="ornek@posta.com" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+</div>
+
+@if (ViewContext.RouteData.Values["action"]!.ToString() == "Edit")
+{
+    <!-- ===================================================== -->
+    <!--  EDIT → Yeni Şifre Oluştur -->
+    <!-- ===================================================== -->
+
+    <div class="form-group mt-4">
+        <label class="fw-bold">Yeni Şifre Oluştur</label>
+
+        <button type="button"
+                id="btnResetPwd"
+                class="btn btn-warning">
+            <i class="fas fa-key"></i> Yeni Şifre Oluştur
+        </button>
+
+        <input type="text"
+               id="GeneratedPassword"
+               name="GeneratedPassword"
+               class="form-control mt-2 fw-bold"
+               readonly
+               placeholder="Yeni şifre burada görünecek" />
+
+        <label class="small text-muted mt-1 d-block">
+            Yeni şifre 8 karakterlik olup; büyük, küçük harf ve rakamlardan oluşur.
+        </label>
+    </div>
+
+    <!-- ===================================================== -->
+    <!--  MODAL: Bilgilendirme Amaçlı -->
+    <!-- ===================================================== -->
+    <div class="modal fade" id="confirmResetModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title">Yeni Şifre Oluşturuldu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Kapat"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>
+                        <strong>@Model.Ad @Model.Soyad</strong> öğretmeni için yeni şifre oluşturuldu.
+                        Bu şifreyi kopyalayıp öğretmene iletebilirsiniz.
+                    </p>
+
+                    <div class="alert alert-info">
+                        Yeni Şifre: <b id="confirmNewPassword"></b>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("btnResetPwd").onclick = function () {
+
+            const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+            const lower = "abcdefghijkmnopqrstuvwxyz";
+            const nums = "23456789";
+
+            function pick(str) {
+                return str[Math.floor(Math.random() * str.length)];
+            }
+
+            let pwd = pick(upper) + pick(lower) + pick(nums);
+            const all = upper + lower + nums;
+            while (pwd.length < 8) pwd += pick(all);
+
+            document.getElementById("GeneratedPassword").value = pwd;
+            document.getElementById("confirmNewPassword").innerText = pwd;
+
+            const modal = new bootstrap.Modal(document.getElementById('confirmResetModal'));
+            modal.show();
+        };
+    </script>
+}

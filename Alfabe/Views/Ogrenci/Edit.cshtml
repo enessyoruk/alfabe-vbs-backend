@@ -1,0 +1,24 @@
+﻿@model Alfabe.Models.Ogrenci
+
+@{
+    ViewData["Title"] = "Öğrenci Düzenle";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Edit" method="post" autocomplete="off">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="Id" />
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    @await Html.PartialAsync("_OgrenciForm")
+
+    <button type="submit" class="btn btn-primary me-2">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

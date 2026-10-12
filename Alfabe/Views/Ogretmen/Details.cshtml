@@ -1,0 +1,40 @@
+﻿@model Alfabe.Models.Ogretmen
+
+@{
+    ViewData["Title"] = "Öğretmen Detayları";
+}
+
+<section class="content-header mb-4">
+    <h1>@ViewData["Title"]</h1>
+</section>
+
+<section class="content">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="card-title">Öğretmen Bilgileri</h3>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Ad)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Ad)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Soyad)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Soyad)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Telefon)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Telefon)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Email)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Email)</dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning me-2">
+                <i class="fas fa-edit"></i> Düzenle
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Listeye Dön
+            </a>
+        </div>
+    </div>
+</section>

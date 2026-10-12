@@ -1,0 +1,93 @@
+﻿@model Alfabe.Models.Dersler
+
+@{
+    ViewData["Title"] = "Ders Detayları";
+}
+
+<section class="content-header mb-4">
+    <h1>
+        <i class="fas fa-book-open me-2"></i> @ViewData["Title"]
+    </h1>
+</section>
+
+<section class="content">
+    <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+            <h3 class="card-title">
+                <i class="fas fa-info-circle me-2"></i> Ders Bilgileri
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <dl class="row">
+
+                <!-- Ders Adı -->
+                <dt class="col-sm-3">Ders Adı</dt>
+                <dd class="col-sm-9">
+                    <strong>@Model.DersAdi</strong>
+                </dd>
+
+                <!-- Sınıf Seviyesi -->
+                <dt class="col-sm-3">Sınıf Seviyesi</dt>
+                <dd class="col-sm-9">
+                    @if (Model.SinifSeviyesi != null)
+                    {
+                        <span class="badge bg-primary">
+                            @Model.SinifSeviyesi . Sınıf
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Belirtilmemiş</span>
+                    }
+                </dd>
+
+                <!-- Açıklama -->
+                <dt class="col-sm-3">Açıklama</dt>
+                <dd class="col-sm-9">
+                    @if (!string.IsNullOrWhiteSpace(Model.Aciklama))
+                    {
+                        @Model.Aciklama
+                    }
+                    else
+                    {
+                        <span class="text-muted">Açıklama girilmemiş.</span>
+                    }
+                </dd>
+
+                <!-- Öğretmen Listesi -->
+                <dt class="col-sm-3">Dersi Veren Öğretmen(ler)</dt>
+                <dd class="col-sm-9">
+                    @if (Model.Ogretmenler != null && Model.Ogretmenler.Any())
+                    {
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var ogretmen in Model.Ogretmenler)
+                            {
+                                <li class="mb-1">
+                                    <i class="fas fa-user text-muted me-2"></i>
+                                    <strong>@ogretmen.Ad @ogretmen.Soyad</strong>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Bu derse henüz öğretmen atanmadı.</span>
+                    }
+
+                </dd>
+
+            </dl>
+        </div>
+
+        <div class="card-footer">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning me-2">
+                <i class="fas fa-edit me-1"></i> Düzenle
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Listeye Dön
+            </a>
+        </div>
+    </div>
+</section>

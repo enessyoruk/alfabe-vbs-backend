@@ -1,0 +1,157 @@
+﻿@model Alfabe.Models.OdemeFiltrelemeViewModel
+
+@{
+    ViewData["Title"] = "Ödemeler";
+}
+
+<div class="container mt-3">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Başarılı!</strong> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+</div>
+
+<div class="row mb-3 align-items-center">
+    <div class="col-md-6">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+    <div class="col-md-6 text-end">
+        <a asp-action="Create" class="btn btn-success">
+            <i class="fas fa-plus"></i> Ödeme Ekle
+        </a>
+    </div>
+</div>
+
+<div class="card shadow-sm border border-dark">
+    <div class="card-header bg-success text-white">
+        <h3 class="card-title m-0">Ödemeler Listesi</h3>
+    </div>
+
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label for="ogrenciAdi" class="form-label">Öğrenci Adı</label>
+                <input type="text" class="form-control" id="ogrenciAdi" name="ogrenciAdi"
+                       value="@Model.OgrenciAdi" placeholder="Ad Soyad ara" />
+            </div>
+
+            <div class="col-md-3">
+                <label for="odemeDurumu" class="form-label">Ödeme Durumu</label>
+                <select class="form-select" id="odemeDurumu" name="odemeDurumu">
+                    <option value="" selected="@(string.IsNullOrEmpty(Model.OdemeDurumu) ? "selected" : null)">Tümü</option>
+                    <option value="Odendi" selected="@(Model.OdemeDurumu == "Odendi" ? "selected" : null)">Ödendi</option>
+                    <option value="Odenmedi" selected="@(Model.OdemeDurumu == "Odenmedi" ? "selected" : null)">Ödenmedi</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label for="baslangicTarihi" class="form-label">Başlangıç Tarihi</label>
+                <input type="date" class="form-control" id="baslangicTarihi" name="baslangicTarihi"
+                       value="@(Model.BaslangicTarihi?.ToString("yyyy-MM-dd") ?? "")" />
+            </div>
+
+            <div class="col-md-2">
+                <label for="bitisTarihi" class="form-label">Bitiş Tarihi</label>
+                <input type="date" class="form-control" id="bitisTarihi" name="bitisTarihi"
+                       value="@(Model.BitisTarihi?.ToString("yyyy-MM-dd") ?? "")" />
+            </div>
+
+            <div class="col-md-1 d-grid gap-2">
+                <button type="submit" class="btn btn-primary w-100">Filtrele</button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary w-100">Temizle</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-body p-0 table-responsive">
+        <table class="table table-striped table-hover mb-0">
+            <thead class="thead-light">
+                <tr>
+                    <th>Ödeme Tarihi</th>
+                    <th>Tutar (₺)</th>
+                    <th>Ödeme Durumu</th>
+                    <th>Öğrenci</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Odemeler != null && Model.Odemeler.Any())
+                {
+                    foreach (var item in Model.Odemeler)
+                    {
+                        <tr>
+                            <td>@item.OdemeTarihi.ToShortDateString()</td>
+                            <td>@item.Tutar.ToString("N2")</td>
+                            <td>
+                                @if (item.OdendiMi)
+                                {
+                                    <span class="badge bg-success">Ödendi</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Ödenmedi</span>
+                                }
+                            </td>
+                            <td>@($"{item.Ogrenci.Ad} {item.Ogrenci.Soyad}")</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning me-1" title="Düzenle">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info me-1" title="Detay">
+                                    <i class="fas fa-info-circle"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" title="Sil">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">Kayıt bulunamadı.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Sayfalama -->
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Sayfalama" class="mt-3">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(Model.CurrentPage <= 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)"
+                       asp-route-ogrenciAdi="@Model.OgrenciAdi"
+                       asp-route-odemeDurumu="@Model.OdemeDurumu"
+                       asp-route-baslangicTarihi="@Model.BaslangicTarihi?.ToString("yyyy-MM-dd")"
+                       asp-route-bitisTarihi="@Model.BitisTarihi?.ToString("yyyy-MM-dd")">Önceki</a>
+                </li>
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-page="@i"
+                           asp-route-ogrenciAdi="@Model.OgrenciAdi"
+                           asp-route-odemeDurumu="@Model.OdemeDurumu"
+                           asp-route-baslangicTarihi="@Model.BaslangicTarihi?.ToString("yyyy-MM-dd")"
+                           asp-route-bitisTarihi="@Model.BitisTarihi?.ToString("yyyy-MM-dd")">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(Model.CurrentPage >= Model.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)"
+                       asp-route-ogrenciAdi="@Model.OgrenciAdi"
+                       asp-route-odemeDurumu="@Model.OdemeDurumu"
+                       asp-route-baslangicTarihi="@Model.BaslangicTarihi?.ToString("yyyy-MM-dd")"
+                       asp-route-bitisTarihi="@Model.BitisTarihi?.ToString("yyyy-MM-dd")">Sonraki</a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>

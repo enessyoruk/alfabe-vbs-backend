@@ -1,0 +1,136 @@
+﻿@model Alfabe.Models.ViewModels.YoklamaViewModel
+
+<form asp-action="Create" method="post" autocomplete="off">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Tarih" class="form-label"></label>
+        <input asp-for="Tarih" class="form-control" type="date" />
+        <span asp-validation-for="Tarih" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="SinifSelect">Sınıf Seçin</label>
+        <select id="SinifSelect" name="Sinif" class="form-control">
+            <option value="" disabled selected>Lütfen Sınıf Seçin</option>
+            @if (ViewBag.Siniflar != null)
+            {
+                var siniflar = ViewBag.Siniflar as List<SelectListItem>;
+                foreach (var sinif in siniflar)
+                {
+                    if (Model.Sinif.ToString() == sinif.Value)
+                    {
+                        <option value="@sinif.Value" selected>@sinif.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@sinif.Value">@sinif.Text</option>
+                    }
+                }
+            }
+        </select>
+        <span asp-validation-for="Sinif" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3" id="ogrenciListContainer" style="display:none;">
+        <label>Öğrenciler</label>
+        <div class="table-responsive" style="max-height:400px; overflow-y:auto;">
+            <table class="table table-hover table-sm" id="ogrenciTable">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:50px"></th>
+                        <th>Ad Soyad</th>
+                        <th style="width:180px">Devam Durumu</th>
+                    </tr>
+                </thead>
+                <tbody id="ogrenciTableBody">
+                    <tr><td colspan="3" class="text-center text-muted">Önce sınıf seçin</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="form-group mt-3">
+        <input type="submit" value="Kaydet" class="btn btn-primary" id="kaydetBtn" disabled />
+        <a asp-action="Index" class="btn btn-secondary ms-2">Geri</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(function () {
+            function toggleKaydetBtn() {
+                let allSelectedHaveDurum = true;
+                $('#ogrenciTableBody tr').each(function () {
+                    const devamDropdown = $(this).find('select.devam-dropdown');
+                    const checkbox = $(this).find('input.ogrenci-checkbox');
+                    if (checkbox.is(':checked') && (!devamDropdown.val() || devamDropdown.val() === "")) {
+                        allSelectedHaveDurum = false;
+                        return false;
+                    }
+                });
+                $('#kaydetBtn').prop('disabled', !allSelectedHaveDurum);
+            }
+
+            $('#SinifSelect').on('change', function () {
+                const sinif = $(this).val();
+                if (!sinif) {
+                    $('#ogrenciListContainer').hide();
+                    alert('Lütfen önce sınıf seçin.');
+                    return;
+                }
+
+                $('#ogrenciListContainer').show();
+                $('#ogrenciTableBody').html('<tr><td colspan="3" class="text-center">Yükleniyor...</td></tr>');
+
+                $.ajax({
+                    url: '@Url.Action("GetOgrencilerBySinif", "Yoklama")',
+                    type: 'GET',
+                    data: { sinif: sinif },
+                    success: function (data) {
+                        $('#ogrenciTableBody').empty();
+                        if (!data || !data.length) {
+                            $('#ogrenciTableBody').append('<tr><td colspan="3" class="text-center text-muted">Seçilen sınıfa ait öğrenci bulunamadı.</td></tr>');
+                            return;
+                        }
+
+                        $.each(data, function (i, ogrenci) {
+                            let optionsHtml = '';
+                            if (@(ViewBag.DevamDurumlariListesi != null ? "true" : "false")) {
+                                @foreach (var dd in ViewBag.DevamDurumlariListesi as List<SelectListItem>)
+                                {
+                                        <text>optionsHtml += '<option value="@dd.Value">@dd.Text</option>';</text>
+                                }
+                            }
+
+                            $('#ogrenciTableBody').append(
+                                `<tr>
+                                    <td><input type="checkbox" class="ogrenci-checkbox" /></td>
+                                    <td>${ogrenci.adSoyad}</td>
+                                    <td>
+                                        <select class="form-select devam-dropdown" name="OgrenciSecimleri[${i}].DevamDurumuId" required>
+                                            <option value="" disabled hidden>Devam Durumu Seçin</option>
+                                            ${optionsHtml}
+                                        </select>
+                                        <input type="hidden" name="OgrenciSecimleri[${i}].OgrenciId" value="${ogrenci.id}" />
+                                    </td>
+                                </tr>`
+                            );
+                        });
+
+                        toggleKaydetBtn();
+                    },
+                    error: function () {
+                        $('#ogrenciTableBody').html('<tr><td colspan="3" class="text-center text-danger">Öğrenciler yüklenirken hata oluştu.</td></tr>');
+                    }
+                });
+            });
+
+            $('#ogrenciTableBody').on('change', 'input.ogrenci-checkbox, select.devam-dropdown', toggleKaydetBtn);
+        });
+    </script>
+}

@@ -1,0 +1,37 @@
+﻿@model Alfabe.Models.Ogretmen
+
+@{
+    ViewData["Title"] = "Yeni Öğretmen Ekle";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+<form asp-action="Create" method="post" autocomplete="off">
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <!-- Ortak form alanları -->
+    @await Html.PartialAsync("_OgretmenForm")
+
+    <!-- Şifre -->
+    <div class="form-group mt-3">
+        <label for="Password">Şifre</label>
+        <input type="password" name="Password" class="form-control" required />
+    </div>
+
+    <div class="form-group mt-3">
+        <label for="PasswordConfirm">Şifre Tekrar</label>
+        <input type="password" name="PasswordConfirm" class="form-control" required />
+    </div>
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+        <a asp-action="Index" class="btn btn-secondary">İptal</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

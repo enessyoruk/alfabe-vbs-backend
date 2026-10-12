@@ -1,0 +1,35 @@
+﻿@model Alfabe.Models.Ogretmen
+
+@{
+    ViewData["Title"] = "Öğretmen Düzenle";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<form asp-action="Edit" method="post" autocomplete="off">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="Id" />
+
+    <!-- 🔥 ESKİ EMAIL'İ POST ETMEK İÇİN -->
+    <input type="hidden" name="OldEmail" value="@ViewBag.Email" />
+
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    @await Html.PartialAsync("_OgretmenForm")
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Kaydet</button>
+        <a asp-action="Index" class="btn btn-secondary">İptal</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

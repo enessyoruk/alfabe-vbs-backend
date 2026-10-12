@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Alfabe.Models.Notification>
+@{
+    ViewData["Title"] = "Bildirimler";
+    string? audience = ViewBag.Audience as string;
+    bool? published = ViewBag.Published as bool?;
+}
+
+<h2 class="mb-3">Bildirimler</h2>
+
+@if (TempData["ok"] != null)
+{
+    <div class="alert alert-success">@TempData["ok"]</div>
+}
+
+<div class="mb-3 d-flex gap-2">
+    <a class="btn btn-primary" asp-action="Create">Yeni Bildirim</a>
+
+    <form method="get" class="d-flex gap-2">
+        <select name="audience" class="form-select" style="max-width:180px;">
+            <option value="">— Hedef (Hepsi) —</option>
+            <option value="parents" selected="@(audience == "parents")">Veliler</option>
+            <option value="teachers" selected="@(audience == "teachers")">Öğretmenler</option>
+            <option value="both" selected="@(audience == "both")">Veliler + Öğretmenler</option>
+        </select>
+        <select name="published" class="form-select" style="max-width:180px;">
+            <option value="">— Yayın Durumu —</option>
+            <option value="true" selected="@(published == true)">Yayınlanmış</option>
+            <option value="false" selected="@(published == false)">Taslak</option>
+        </select>
+        <button class="btn btn-outline-secondary" type="submit">Filtrele</button>
+    </form>
+</div>
+
+<table class="table table-striped table-bordered align-middle">
+    <thead>
+        <tr>
+            <th>Başlık</th>
+            <th>Hedef</th>
+            <th>Durum</th>
+            <th>Oluşturma</th>
+            <th>Başlangıç</th>
+            <th>Bitiş</th>
+            <th style="width:240px;">İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var n in Model)
+        {
+            <tr>
+                <td>@n.Title</td>
+                <td>
+                    @(
+                                    n.Audience == Alfabe.Models.NotificationAudience.Parents ? "Veliler" :
+                                    n.Audience == Alfabe.Models.NotificationAudience.Teachers ? "Öğretmenler" : "Veliler + Öğretmenler"
+                                    )
+            </td>
+            <td>
+                @if (n.IsPublished)
+                    {
+                        <span class="badge bg-success">Yayınlandı</span>
+                    }
+                    else
+                    {
+
+                        <span class="badge bg-warning text-dark">Taslak</span>
+                    }
+                </td>
+                <td>@n.CreatedAt.LocalDateTime.ToString("g")</td>
+                <td>@(n.ScheduledAt?.LocalDateTime.ToString("g") ?? "-")</td>
+                <td>@(n.ExpiresAt?.LocalDateTime.ToString("g") ?? "-")</td>
+                <td>
+                    <div class="d-flex gap-2">
+                        @if (n.IsPublished)
+                        {
+                            <form asp-action="Unpublish" method="post">
+                                <input type="hidden" name="id" value="@n.Id" />
+                                <button class="btn btn-sm btn-outline-warning" type="submit">Yayından Al</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-action="Publish" method="post">
+                                <input type="hidden" name="id" value="@n.Id" />
+                                <button class="btn btn-sm btn-outline-success" type="submit">Yayınla</button>
+                            </form>
+                        }
+                        <form asp-action="Delete" method="post" onsubmit="return confirm('Silinsin mi?');">
+                            <input type="hidden" name="id" value="@n.Id" />
+                            <button class="btn btn-sm btn-outline-danger" type="submit">Sil</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

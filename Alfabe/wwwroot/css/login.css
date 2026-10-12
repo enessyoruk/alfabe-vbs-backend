@@ -1,0 +1,90 @@
+﻿/* Arka plan resmi ve blur efekti */
+body {
+    background: url('/img/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Login kartı stili */
+.login-card {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+    /* Kart içeriği */
+    .login-card h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 600;
+    }
+
+    /* Form öğeleri */
+    .login-card .form-group {
+        margin-bottom: 20px;
+    }
+
+    .login-card .form-control {
+        height: 45px;
+        border-radius: 10px;
+        border: 1px solid #ced4da;
+    }
+
+    .login-card .btn-primary {
+        width: 100%;
+        border-radius: 10px;
+        padding: 10px;
+        font-weight: 600;
+    }
+
+    .login-card .form-check-label {
+        font-size: 0.9rem;
+    }
+
+    /* Giriş bağlantıları */
+    .login-card .bottom-text {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 0.9rem;
+    }
+
+    .login-card a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+        .login-card a:hover {
+            text-decoration: underline;
+        }
+
+/* Giriş animasyonu */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobil uyumlu yap */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 30px 20px;
+        border-radius: 16px;
+    }
+}

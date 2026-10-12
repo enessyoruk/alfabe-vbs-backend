@@ -1,0 +1,168 @@
+/* Temel font büyüklük ayarlarý */
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* Focus efektleri */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    outline: none;
+}
+
+/* Genel body ve font ayarlarý */
+body {
+    margin-bottom: 60px;
+    background-color: #ffffff !important;
+    color: #212529;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Placeholder ve select renkleri */
+::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+select {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+    select option[value=""] {
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    select:invalid {
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+/* Ana yapýlar */
+.wrapper,
+.content-wrapper,
+.container-fluid,
+.main-footer,
+.main-sidebar,
+aside,
+section.content {
+    background-color: #ffffff !important;
+}
+
+/* Hero bölüm (arka plan logo) */
+.hero-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 500px;
+    background-color: #ffffff;
+}
+
+.hero-logo-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1000px;
+    max-width: 100%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    filter: blur(0.05px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Sadece anasayfa için beyaz arka plan */
+.home-page-white {
+    background-color: #ffffff !important;
+}
+
+/* Sidebar koyu arka plan */
+.main-sidebar.sidebar-dark-primary {
+    background-color: #343a40 !important;
+}
+
+/* Navbar beyaz tema */
+.main-header.navbar-white {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #dee2e6;
+}
+
+    .main-header.navbar-white .navbar-nav .nav-link {
+        color: #212529;
+    }
+
+        .main-header.navbar-white .navbar-nav .nav-link:hover {
+            color: #0056b3;
+        }
+
+/* Footer stil */
+.main-footer {
+    background-color: #f8f9fa !important;
+    border-top: 1px solid #dee2e6;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* Baðlantý stili (link button) */
+.btn-link.nav-link {
+    color: #007bff;
+}
+
+    .btn-link.nav-link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+/* Sidebar markasý (Alfabe Admin) */
+.non-clickable-brand {
+    font-weight: 900;
+    
+    cursor: default;
+    pointer-events: none;
+    display: block;
+    padding: 0.8125rem 1rem;
+    font-size: 1.25rem;
+    user-select: none;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+/* Sidebar küçülünce sadece ikonlarý göster */
+.sidebar-mini.sidebar-collapse .main-sidebar .nav-sidebar .nav-link p,
+.sidebar-mini.sidebar-collapse .non-clickable-brand {
+    display: none !important;
+}
+.small-box .small-box-footer {
+    color: #fff !important;
+}
+.small-box .inner {
+    color: #fff;
+}
+/* Tablo üzerine gelince arka plan rengi */
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Butonlarýn ikonlarýyla biraz daha uyumlu görünmesi için */
+.btn i {
+    margin-right: 4px;
+}
+
+/* Baþlýk ve içerik arasý boþluk */
+h1.mb-4 {
+    font-weight: 700;
+    color: #343a40;
+}
+

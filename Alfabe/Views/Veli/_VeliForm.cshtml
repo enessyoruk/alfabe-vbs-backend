@@ -1,0 +1,147 @@
+﻿@model Alfabe.Models.Veli
+
+<!-- AD -->
+<div class="form-group mb-3">
+    @Html.LabelFor(m => m.Ad)
+    @Html.TextBoxFor(m => m.Ad, new { @class = "form-control", placeholder = "Ad" })
+    @Html.ValidationMessageFor(m => m.Ad, "", new { @class = "text-danger" })
+</div>
+
+<!-- SOYAD -->
+<div class="form-group mb-3">
+    @Html.LabelFor(m => m.Soyad)
+    @Html.TextBoxFor(m => m.Soyad, new { @class = "form-control", placeholder = "Soyad" })
+    @Html.ValidationMessageFor(m => m.Soyad, "", new { @class = "text-danger" })
+</div>
+
+<!-- EMAIL -->
+<div class="form-group mb-3">
+    @Html.Label("E-Posta")
+    <input type="email"
+           name="Email"
+           value="@(ViewBag.Email ?? "")"
+           class="form-control"
+           placeholder="ornek@mail.com"
+           required />
+</div>
+
+<!-- TELEFON -->
+<div class="form-group mb-3">
+    @Html.LabelFor(m => m.Telefon)
+    @Html.TextBoxFor(m => m.Telefon, new { @class = "form-control", placeholder = "05xx xxx xx xx" })
+</div>
+
+<!-- TELEFON2 -->
+<div class="form-group mb-3">
+    @Html.LabelFor(m => m.Telefon2)
+    @Html.TextBoxFor(m => m.Telefon2, new { @class = "form-control", placeholder = "2. Telefon" })
+</div>
+
+<!-- ADRES -->
+<div class="form-group mb-3">
+    @Html.Label("Adres")
+    @Html.TextAreaFor(
+    m => m.Adres.DetayAdres,
+        new { @class = "form-control", rows = 3, placeholder = "Adres (opsiyonel)" })
+</div>
+
+@if (ViewContext.RouteData.Values["action"]!.ToString() == "Create")
+{
+    <!-- ===================================================== -->
+    <!-- CREATE → Şifre Alanları -->
+    <!-- ===================================================== -->
+    <div class="form-group mt-4">
+
+        <label class="fw-bold">Şifre</label>
+        <input type="password"
+               name="Password"
+               class="form-control"
+               required />
+
+        <label class="small text-muted">
+            Şifre en az <b>8 karakter</b>, <b>büyük harf + küçük harf + rakam</b> içermelidir.
+        </label>
+
+        <label class="fw-bold mt-3">Şifre Tekrar</label>
+        <input type="password"
+               name="PasswordConfirm"
+               class="form-control"
+               required />
+    </div>
+}
+else
+{
+    <!-- ===================================================== -->
+    <!-- EDIT → Yeni Şifre Oluştur -->
+    <!-- ===================================================== -->
+
+    <div class="form-group mt-4">
+        <label class="fw-bold">Yeni Şifre Oluştur</label>
+
+        <button type="button"
+                id="btnResetPwd"
+                class="btn btn-warning">
+            <i class="fas fa-key"></i> Yeni Şifre Oluştur
+        </button>
+
+        <input type="text"
+               id="GeneratedPassword"
+               name="GeneratedPassword"
+               class="form-control mt-2 fw-bold"
+               readonly
+               placeholder="Yeni şifre burada görünecek" />
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- MODAL: Bilgilendirme Amaçlı -->
+    <!-- ===================================================== -->
+    <div class="modal fade" id="confirmResetModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title">Yeni Şifre Oluşturuldu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>
+                        <strong>@Model.Ad @Model.Soyad</strong> velisi için yeni şifre oluşturuldu.
+                        Bu şifreyi kopyalayıp veliye iletebilirsiniz.
+                    </p>
+
+                    <div class="alert alert-info">
+                        Yeni Şifre: <b id="confirmNewPassword"></b>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- SCRIPT: Şifre üret + modal göster -->
+    <!-- ===================================================== -->
+    <script>
+        document.getElementById("btnResetPwd").onclick = function () {
+
+            const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+            const lower = "abcdefghijkmnopqrstuvwxyz";
+            const nums = "23456789";
+
+            function pick(str) {
+                return str[Math.floor(Math.random() * str.length)];
+            }
+
+            let pwd = pick(upper) + pick(lower) + pick(nums);
+            const all = upper + lower + nums;
+            while (pwd.length < 8) pwd += pick(all);
+
+            document.getElementById("GeneratedPassword").value = pwd;
+            document.getElementById("confirmNewPassword").innerText = pwd;
+
+            const modal = new bootstrap.Modal(document.getElementById('confirmResetModal'));
+            modal.show();
+        };
+    </script>
+}

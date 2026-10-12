@@ -1,0 +1,129 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Ana Sayfa";
+    ViewData["BodyClass"] = "home-page-white";
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="hero-wrapper">
+        <img src="~/img/logo-alfabe.png" alt="Alfabe Logo" class="hero-logo-background" />
+
+        <div class="container-fluid hero-content mt-4">
+            <div class="row">
+
+                <!-- Öğrenci Sayısı Kutusu -->
+                <div class="col-lg-2 col-6">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>@ViewData["OgrenciSayisi"]</h3>
+                            <p>Öğrenci Sayısı</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <a href="@Url.Action("Index", "Ogrenci")" class="small-box-footer text-white">
+                            Daha Fazla <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Veli Sayısı Kutusu -->
+                <div class="col-lg-2 col-6">
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>@ViewData["VeliSayisi"]</h3>
+                            <p>Veli Sayısı</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <a href="@Url.Action("Index", "Veli")" class="small-box-footer text-white">
+                            Daha Fazla <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Öğretmen Sayısı Kutusu -->
+                <div class="col-lg-2 col-6">
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3>@ViewData["OgretmenSayisi"]</h3>
+                            <p>Öğretmen Sayısı</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <a href="@Url.Action("Index", "Ogretmen")" class="small-box-footer text-white">
+                            Daha Fazla <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Ödeme Sayısı Kutusu -->
+                <div class="col-lg-2 col-6">
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>@ViewData["OdemeSayisi"]</h3>
+                            <p>Toplam Ödeme</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <a href="@Url.Action("Index", "Odeme")" class="small-box-footer text-white">
+                            Daha Fazla <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Yoklama Sayısı Kutusu -->
+                <div class="col-lg-2 col-6">
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>@ViewData["YoklamaSayisi"]</h3>
+                            <p>Yoklama Sayısı</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <a href="@Url.Action("Index", "Yoklama")" class="small-box-footer text-white">
+                            Daha Fazla <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Ders Sayısı Kutusu -->
+                <div class="col-lg-2 col-6">
+                    <div class="small-box bg-secondary">
+                        <div class="inner">
+                            <h3>@ViewData["DersSayisi"]</h3>
+                            <p>Ders Sayısı</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <a href="@Url.Action("Index", "Dersler")" class="small-box-footer text-white">
+                            Daha Fazla <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="text-center mt-5">
+        <h3>Hoşgeldiniz!</h3>
+        <p class="lead">
+            İstatistikleri görüntülemek için lütfen
+            <a href="@Url.Action("Login", "Account")">giriş yapınız</a>.
+        </p>
+
+        <img src="/img/logo-alfabe.png"
+             alt="Alfabe Logo"
+             class="img-fluid my-4"
+             style="max-width: 1000px; width: 100%; height: auto;" />
+    </div>
+}

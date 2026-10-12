@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>64e5dfff-c2c7-4378-aa96-c6c84eedf936</UserSecretsId>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+
+    <!-- ⭐ Swagger'ın çökmesini engelleyen zorunlu ayarlar -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+    <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.22" />
+
+    <!-- ⭐ EF Core paketleri NET 8 sürümüne çekildi -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.6" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.0.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />
+
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
+
+    <!-- Swagger'ın NET 8 uyumlu son stabil sürümü -->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="10.5.7" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="wwwroot\adminlte\.github\codeql\codeql-config.yml" />
+    <None Include="wwwroot\adminlte\.github\CONTRIBUTING.md" />
+    <None Include="wwwroot\adminlte\.github\dependabot.yml" />
+    <None Include="wwwroot\adminlte\.github\ISSUE_TEMPLATE\bug-report-for-adminlte-v3.1-x.md" />
+    <None Include="wwwroot\adminlte\.github\ISSUE_TEMPLATE\feature-request-for-adminlte-v4-x.md" />
+    <None Include="wwwroot\adminlte\.github\workflows\ci.yml" />
+    <None Include="wwwroot\adminlte\.github\workflows\codeql.yml" />
+    <None Include="wwwroot\adminlte\.github\workflows\docs.yml" />
+    <None Include="wwwroot\adminlte\.github\workflows\lint.yml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\img\" />
+    <Folder Include="wwwroot\lib\flatpickr\l10n\" />
+  </ItemGroup>
+
+</Project>

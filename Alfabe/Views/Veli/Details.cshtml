@@ -1,0 +1,62 @@
+﻿@model Alfabe.Models.Veli
+
+@{
+    ViewData["Title"] = "Veli Detayları";
+}
+
+<section class="content-header mb-4">
+    <h1>@ViewData["Title"]</h1>
+</section>
+
+<section class="content">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="card-title">Veli Bilgileri</h3>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Ad)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Ad)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Soyad)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Soyad)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Telefon)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Telefon)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Telefon2)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Telefon2)</dd>
+
+                <!-- Öğrenci Listesi -->
+                <dt class="col-sm-3">Öğrenciler</dt>
+                <dd class="col-sm-9">
+                    @if (Model.Ogrenciler != null && Model.Ogrenciler.Any())
+                    {
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var ogr in Model.Ogrenciler)
+                            {
+                                <li>
+                                    <i class="fas fa-user text-muted me-2"></i>
+                                    @ogr.Ad @ogr.Soyad
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Bu veliye bağlı öğrenci bulunmamaktadır.</span>
+                    }
+                </dd>
+            </dl>
+
+        </div>
+        <div class="card-footer">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Düzenle
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Listeye Dön
+            </a>
+        </div>
+    </div>
+</section>

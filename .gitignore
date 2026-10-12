@@ -1,0 +1,20 @@
+﻿## Visual Studio / .NET
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+## Sensitive Configuration Files (Database passwords & JWT secrets)
+Alfabe/appsettings.Production.json
+Alfabe/appsettings.json
+!Alfabe/appsettings.example.json
+
+## Uploads
+Alfabe/wwwroot/uploads/*
+!Alfabe/wwwroot/uploads/.gitkeep

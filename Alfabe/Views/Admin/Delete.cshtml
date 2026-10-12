@@ -1,0 +1,16 @@
+﻿@model Alfabe.Models.AppUser
+
+@{
+    ViewData["Title"] = "Yönetici Sil";
+}
+
+<h1>Yönetici Sil</h1>
+
+<h4>Yönetici: @Model.AdSoyad (@Model.UserName)</h4>
+<p>Bu işlemi yapmak istediğinizden emin misiniz?</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">İptal</a>
+</form>

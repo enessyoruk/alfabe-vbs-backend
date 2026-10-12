@@ -1,0 +1,225 @@
+﻿@model IEnumerable<Alfabe.Models.Ogrenci>
+
+@{
+    ViewData["Title"] = "Öğrenci Listesi";
+    var currentSort = ViewData["SortOrder"] as string ?? "";
+    var searchQuery = ViewData["Search"] as string ?? "";
+    var currentPage = ViewData["CurrentPage"] as int? ?? 1;
+    var totalPages = ViewData["TotalPages"] as int? ?? 1;
+    int pageWindow = 2;
+}
+
+<h1 class="mb-4">Öğrenci Listesi</h1>
+
+@if (TempData["Message"] is string message)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @message
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+    </div>
+}
+
+<!-- ===========================================================
+     🔄 Tüm Öğrencilerin Derslerini Senkronize Et (AJAX)
+     =========================================================== -->
+<div class="my-3 p-3 border border-warning rounded bg-warning bg-opacity-10">
+    <button id="syncLessonsBtn" class="btn btn-warning fw-bold">
+        🔄 Tüm Öğrenci Derslerini Senkronize Et
+    </button>
+    <span class="ms-2 text-muted">(Sınıf–Ders eşleştirmelerini tamamen yeniler)</span>
+
+    <div id="syncResult" class="mt-3" style="display:none;"></div>
+</div>
+
+<!-- ===========================================================
+     Arama + Yeni Öğrenci Ekle
+     =========================================================== -->
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <a asp-action="Create" class="btn btn-sm btn-primary">
+        <i class="fas fa-plus-circle"></i> Yeni Öğrenci Ekle
+    </a>
+
+    <form asp-action="Index" method="get" class="d-flex align-items-center" role="search">
+        <input type="text" name="search" class="form-control form-control-sm me-2"
+               placeholder="Ad veya Soyad ara..." value="@searchQuery" />
+        <button type="submit" class="btn btn-sm btn-outline-primary me-2">
+            <i class="fas fa-search"></i>
+        </button>
+        <a asp-action="Index" class="btn btn-sm btn-outline-secondary" title="Filtreyi temizle">
+            <i class="fas fa-times"></i>
+        </a>
+    </form>
+</div>
+
+
+<!-- ===========================================================
+     Öğrenci Tablosu
+     =========================================================== -->
+<div class="table-responsive rounded-3 overflow-hidden shadow-sm border">
+    <table class="table table-striped table-hover align-middle m-0">
+        <thead class="table-light">
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@((currentSort == "ad_asc") ? "ad_desc" : "ad_asc")"
+                       asp-route-search="@searchQuery" asp-route-page="@currentPage">
+                        Ad
+                        @if (currentSort.StartsWith("ad_"))
+                        {
+                            <i class="fas @(currentSort == "ad_asc" ? "fa-sort-alpha-down" : "fa-sort-alpha-up") ms-1"></i>
+                        }
+                    </a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@((currentSort == "soyad_asc") ? "soyad_desc" : "soyad_asc")"
+                       asp-route-search="@searchQuery" asp-route-page="@currentPage">
+                        Soyad
+                        @if (currentSort.StartsWith("soyad_"))
+                        {
+                            <i class="fas @(currentSort == "soyad_asc" ? "fa-sort-alpha-down" : "fa-sort-alpha-up") ms-1"></i>
+                        }
+                    </a>
+                </th>
+                <th>Sınıf</th>
+                <th>Telefon</th>
+                <th style="width: 180px;">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="transition: none;">
+                    <td>@item.Ad</td>
+                    <td>@item.Soyad</td>
+                    <td>@item.Sinif</td>
+                    <td>@item.Telefon</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning me-1" title="Düzenle">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a asp-controller="Ogrenci" asp-action="Details" asp-route-id="@item.Id"
+                           class="btn btn-sm btn-info me-1" title="Detaylar">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" title="Sil">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- ===========================================================
+         Sayfalama
+         =========================================================== -->
+    <nav aria-label="Sayfalama">
+        <ul class="pagination justify-content-center mt-3">
+            <li class="page-item @(currentPage <= 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@(currentPage - 1)"
+                   asp-route-sortOrder="@currentSort" asp-route-search="@searchQuery">Önceki</a>
+            </li>
+
+            <li class="page-item @(currentPage == 1 ? "active" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="1"
+                   asp-route-sortOrder="@currentSort" asp-route-search="@searchQuery">1</a>
+            </li>
+
+            @if (currentPage - pageWindow > 2)
+            {
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            }
+
+            @for (int i = Math.Max(2, currentPage - pageWindow); i < currentPage; i++)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i"
+                       asp-route-sortOrder="@currentSort" asp-route-search="@searchQuery">@i</a>
+                </li>
+            }
+
+            @if (currentPage != 1 && currentPage != totalPages)
+            {
+                <li class="page-item active"><span class="page-link">@currentPage</span></li>
+            }
+
+            @for (int i = currentPage + 1; i <= Math.Min(totalPages - 1, currentPage + pageWindow); i++)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i"
+                       asp-route-sortOrder="@currentSort" asp-route-search="@searchQuery">@i</a>
+                </li>
+            }
+
+            @if (currentPage + pageWindow < totalPages - 1)
+            {
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+            }
+
+            @if (totalPages > 1)
+            {
+                <li class="page-item @(currentPage == totalPages ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@totalPages"
+                       asp-route-sortOrder="@currentSort" asp-route-search="@searchQuery">@totalPages</a>
+                </li>
+            }
+
+            <li class="page-item @(currentPage >= totalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@(currentPage + 1)"
+                   asp-route-sortOrder="@currentSort" asp-route-search="@searchQuery">Sonraki</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- ===========================================================
+     Senkronizasyon Script
+     =========================================================== -->
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $("#syncLessonsBtn").on("click", function () {
+
+                if (!confirm("Tüm öğrencilerin ders kayıtları yeniden oluşturulacak. Onaylıyor musunuz?"))
+                    return;
+
+                $("#syncLessonsBtn").prop("disabled", true).text("İşleniyor...");
+
+                $.ajax({
+                    url: "/api/admin/sync-student-lessons",
+                    type: "POST",
+                    success: function (data) {
+
+                        $("#syncResult")
+                            .html(`
+                                <div class="alert alert-success">
+                                    ✔ ${data.message}<br/>
+                                    <strong>Toplam Öğrenci:</strong> ${data.totalStudents}<br/>
+                                    <strong>İşlenen:</strong> ${data.processed}
+                                </div>
+                            `)
+                            .show();
+
+                        $("#syncLessonsBtn").prop("disabled", false).text("🔄 Tüm Öğrenci Derslerini Senkronize Et");
+                    },
+                    error: function (err) {
+
+                        const msg = err.responseText || "Bilinmeyen bir hata oluştu.";
+
+                        $("#syncResult")
+                            .html(`
+                                <div class="alert alert-danger">
+                                    ❌ Senkronizasyon başarısız oldu.<br/>
+                                    <small>${msg}</small>
+                                </div>
+                            `)
+                            .show();
+
+                        $("#syncLessonsBtn").prop("disabled", false).text("🔄 Tüm Öğrenci Derslerini Senkronize Et");
+                    }
+                });
+            });
+
+        });
+    </script>
+}

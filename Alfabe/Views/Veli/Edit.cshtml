@@ -1,0 +1,32 @@
+﻿@model Alfabe.Models.Veli
+
+@{
+    ViewData["Title"] = "Veli Düzenle";
+}
+
+<h2>Veli Düzenle</h2>
+<hr />
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+
+            @await Html.PartialAsync("_VeliForm")
+
+            <!-- 🔥 ESKİ EMAIL'İ POST ETMEK İÇİN GEREKLİ HIDDEN INPUT -->
+            <input type="hidden" name="OldEmail" value="@ViewBag.Email" />
+
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="AppUserId" />
+
+            <button class="btn btn-primary mt-3">Kaydet</button>
+            <a asp-action="Index" class="btn btn-secondary mt-3">Geri</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,136 @@
+﻿@model IEnumerable<Alfabe.Models.VbsUser>
+@{
+    ViewData["Title"] = "Bekleyen Başvurular";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-primary"><i class="fas fa-user-check"></i> Bekleyen Başvurular</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                @if (Model == null || !Model.Any())
+                {
+                    <div class="alert alert-info text-center">
+                        <i class="fas fa-info-circle"></i> Henüz başvuru bulunmuyor.
+                    </div>
+                }
+                else
+                {
+                    <table class="table table-hover table-bordered table-striped align-middle">
+                        <thead class="table-primary">
+                            <tr class="text-center">
+                                <th>#</th>
+                                <th>Ad Soyad</th>
+                                <th>E-posta</th>
+                                <th>Telefon</th>
+                                <th>Tip</th>
+                                <th>Durum</th>
+                                <th>Başvuru Tarihi</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var v in Model)
+                            {
+                                var rowClass = v.IsRejected
+                                ? "table-danger"
+                                : "table-warning";
+
+                                <tr class="text-center @rowClass">
+                                    <td>@v.Id</td>
+                                    <td>@v.FullName</td>
+                                    <td>@v.Email</td>
+                                    <td>@v.PhoneNumber</td>
+                                    <td>
+                                        @if (v.UserType == "parent")
+                                        {
+                                            <span class="badge bg-info">Veli</span>
+                                        }
+                                        else if (v.UserType == "teacher")
+                                        {
+                                            <span class="badge bg-secondary">Öğretmen</span>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @if (v.IsRejected)
+                                        {
+                                            <span class="badge bg-danger">Reddedildi</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Beklemede</span>
+                                        }
+                                    </td>
+
+                                    <td>@v.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+
+                                    <td>
+                                        @if (!v.IsApproved && !v.IsRejected)
+                                        {
+                                            <!-- ONAYLA BUTONU -->
+                                            <form asp-action="Approve" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@v.Id" />
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="fas fa-check"></i> Onayla
+                                                </button>
+                                            </form>
+
+                                            <!-- REDDET BUTONU -->
+                                            <form asp-action="Reject" method="post" class="d-inline"
+                                                  onsubmit="return confirm('Bu başvuruyu reddetmek istediğinize emin misiniz?');">
+                                                <input type="hidden" name="id" value="@v.Id" />
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-times"></i> Reddet
+                                                </button>
+                                            </form>
+                                        }
+                                        else if (v.IsRejected)
+                                        {
+                                            <span class="text-danger fw-bold">Reddedildi</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <!-- Sayfalama -->
+                    <nav class="mt-3">
+                        <ul class="pagination justify-content-center">
+                            @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success mt-3 text-center">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mt-3 text-center">@TempData["Error"]</div>
+}
+@if (TempData["Info"] != null)
+{
+    <div class="alert alert-info mt-3 text-center">@TempData["Info"]</div>
+}

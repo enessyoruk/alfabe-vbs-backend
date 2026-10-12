@@ -1,0 +1,41 @@
+﻿@model Alfabe.Models.Dersler
+
+@{
+    ViewData["Title"] = "Yeni Ders Ekle";
+}
+
+<section class="content-header mb-4">
+    <h1>@ViewData["Title"]</h1>
+</section>
+
+<section class="content">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-plus me-2"></i>Yeni Ders Ekle
+            </h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post" autocomplete="off">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                @await Html.PartialAsync("_DerslerForm")
+
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Kaydet
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Geri
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

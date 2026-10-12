@@ -1,0 +1,27 @@
+﻿@model Alfabe.Models.AppUser
+
+@{
+    ViewData["Title"] = "Yönetici Detayı";
+}
+
+<h1>Yönetici Detayı</h1>
+
+<div>
+    <h4>@Model.AdSoyad (@Model.UserName)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Kullanıcı Adı</dt>
+        <dd class="col-sm-10">@Model.UserName</dd>
+
+        <dt class="col-sm-2">Ad Soyad</dt>
+        <dd class="col-sm-10">@Model.AdSoyad</dd>
+
+        <dt class="col-sm-2">E-Posta</dt>
+        <dd class="col-sm-10">@Model.Email</dd>
+    </dl>
+</div>
+
+<p>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Düzenle</a>
+    <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+</p>

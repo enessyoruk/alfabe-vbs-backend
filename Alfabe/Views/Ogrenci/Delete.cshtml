@@ -1,0 +1,40 @@
+﻿@model Alfabe.Models.Ogrenci
+
+@{
+    ViewData["Title"] = "Öğrenci Silme Onayı";
+}
+
+<section class="content-header">
+    <h1>@ViewData["Title"]</h1>
+</section>
+
+<section class="content">
+    <div class="card card-danger">
+        <div class="card-header">
+            <h3 class="card-title">Silme İşlemini Onayla</h3>
+        </div>
+        <div class="card-body">
+            <p>Bu öğrenciyi silmek istediğinizden emin misiniz?</p>
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Ad)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Ad)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Soyad)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Soyad)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Telefon)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Telefon)</dd>
+
+                <dt class="col-sm-3">Veli</dt>
+                <dd class="col-sm-9">@Model.Veli?.Ad @Model.Veli?.Soyad</dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <form asp-action="Delete" method="post">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger">Sil</button>
+                <a asp-action="Index" class="btn btn-secondary">İptal</a>
+            </form>
+        </div>
+    </div>
+</section>
